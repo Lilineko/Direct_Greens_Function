@@ -5,14 +5,14 @@
 #include <cmath>
 #include <Eigen/Eigenvalues>
 
-// #define INTERACTIONS
+#define INTERACTIONS
 #define PROXIMITY
 
 static const double J = 0.4;
-static const double omegaMin = -3.0;
+static const double omegaMin = -6.0;
 static const double omegaMax =  8.0;
-static const size_t omegaPoints = 10001;
-static const std::complex< double > iDelta(0, 0.001);
+static const size_t omegaPoints = 1401;
+static const std::complex< double > iDelta(0, 0.05);
 
 static const double PI = 4.0 * atan(1.0);
 
@@ -282,7 +282,9 @@ void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLen
 void calculate(Node * graph)
 {
     std::cout << "Calculating Spectral Function - IN PROGRESS...";
-    printToFile(calculateSpectralFunction(calculateGreensFunction(graph)), "spectral.dat");
+    VectorXcd result = calculateGreensFunction(graph);
+    printToFile(result, "greens.dat");
+    printToFile(calculateSpectralFunction(result), "spectral.dat");
     std::cout << "\r" << "Calculating Spectral Function - FINISHED      " << std::endl;
 }
 
