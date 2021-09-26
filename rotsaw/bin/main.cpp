@@ -282,7 +282,8 @@ void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLen
 #endif
 }
 
-std::vector< std::string > readPaths(std::string fileName) {
+std::vector< std::string > readPaths(std::string fileName) 
+{
     std::ifstream file;
     std::vector< std::string > paths;
     file.open(fileName);
@@ -296,14 +297,16 @@ std::vector< std::string > readPaths(std::string fileName) {
     return paths;
 }
 
-std::string getFileName(std::string path) {
+std::string getFileName(std::string path) 
+{
     std::string fileName = "output/SE_";
     fileName.append(path);
     fileName.append(".txt");
     return fileName;
 }
 
-Node *getNode(Node *graph, std::string path) {
+Node *getNode(Node *graph, std::string path) 
+{
     std::vector< char > D = {'E', 'N', 'W', 'S'};
     for (size_t it = 0; it < path.size(); it++) { 
         for (size_t id = 0; id < 4; id++) {
