@@ -9,10 +9,10 @@
 #define PROXIMITY
 
 static const double J = 0.4;
-static const double omegaMin = -6.0;
-static const double omegaMax =  8.0;
-static const size_t omegaPoints = 1401;
-static const std::complex< double > iDelta(0, 0.05);
+static const double omegaMin = -3.5;
+static const double omegaMax =  6.5;
+static const size_t omegaPoints = 20001;
+static const std::complex< double > iDelta(0, 0.01);
 
 static const double PI = 4.0 * atan(1.0);
 
@@ -282,7 +282,7 @@ void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLen
 #endif
 }
 
-std::vector< std::string > readPaths(std::string fileName) 
+std::vector< std::string > readPaths(std::string fileName)
 {
     std::ifstream file;
     std::vector< std::string > paths;
@@ -297,7 +297,7 @@ std::vector< std::string > readPaths(std::string fileName)
     return paths;
 }
 
-std::string getFileName(std::string path) 
+std::string getFileName(std::string path)
 {
     std::string fileName = "output/SE_";
     fileName.append(path);
@@ -305,16 +305,16 @@ std::string getFileName(std::string path)
     return fileName;
 }
 
-Node *getNode(Node *graph, std::string path) 
+Node *getNode(Node *graph, std::string path)
 {
     std::vector< char > D = {'E', 'N', 'W', 'S'};
-    for (size_t it = 0; it < path.size(); it++) { 
+    for (size_t it = 0; it < path.size(); it++) {
         for (size_t id = 0; id < 4; id++) {
             if (path[it] == D[id]) {
                 graph = graph->getChild(id);
                 break;
             }
-        }  
+        }
     }
     return graph;
 }
