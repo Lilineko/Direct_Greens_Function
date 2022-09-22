@@ -15,7 +15,7 @@ include("base.jl")
 nMagnons = 15
 JRange = [J for J in 0.0:0.005:1.0]
 mRange = [Int64[],[0],[1],[2],[3],[0,0],[0,1],[1,0],[1,1],[2,0],[2,1],[3,1]]
-isNoint = true
+isNoint = false
 
 peaks = OrderedDict{Vector{Int64}, OrderedDict{Float64, Vector{Union{Vector{Float64}, Vector{ComplexF64}}}}}()
 for m in mRange

@@ -3,10 +3,10 @@ using JSON, OrderedCollections
 info = OrderedDict{String, Union{Int64,Float64}}(
     "tunneling constant" => 1.0,
     "coupling constant" => 0.4,
-    "broadening" => 0.02,
+    "broadening" => 0.01,
     "omega min" => -3.5,
     "omega max" => 12.5,
-    "omega points" => 4001,
+    "omega points" => 8001,
     "lattice type" => 0
 )
 
@@ -15,7 +15,7 @@ include("base.jl")
 magnons = 1000
 JRange = [J for J in 0.01:0.005:1.0]
 mRange = [Int64[], [0], [1], [0,0], [1,0], [1,1]]#,[0],[1],[2],[3],[0,0],[0,1],[1,0],[1,1],[2,0],[2,1],[3,1]]
-isNoint = false
+isNoint = true
 
 peaks = OrderedDict{Vector{Int64}, OrderedDict{Float64, Vector{Union{Vector{Float64}, Vector{ComplexF64}}}}}()
 for m in mRange

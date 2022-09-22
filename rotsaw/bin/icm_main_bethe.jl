@@ -3,10 +3,10 @@ using JSON, OrderedCollections
 info = OrderedDict{String, Union{Int64,Float64}}(
     "tunneling constant" => 1.0,
     "coupling constant" => 0.4,
-    "broadening" => 0.02,
+    "broadening" => 0.01,
     "omega min" => -3.5,
     "omega max" => 12.5,
-    "omega points" => 4001,
+    "omega points" => 8001,
     "lattice type" => 0
 )
 
@@ -50,8 +50,8 @@ end
 
 ### System Parameters
 maxDepth = 1000 ### cmp `global maxDepth` in `run_main_bethe`
-JRange = 0.01:0.005:1.0
-mRange = [Int64[],[0],[1],[0,0],[0,1],[1,1]]
+JRange = 0.0:0.005:1.0
+mRange = [Int64[],[0],[1],[0,0],[0,1],[1,0],[1,1]]
 isNoint = false
 
 if length(ARGS) > 0
