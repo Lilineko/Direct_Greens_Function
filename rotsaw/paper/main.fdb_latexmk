@@ -1,18 +1,18 @@
 # Fdb version 3
-["bibtex main"] 1659955673 "main.aux" "main.bbl" "main" 1659955676
+["bibtex main"] 1659955673 "main.aux" "main.bbl" "main" 1665053838
   "apsrev4-1.bst" 0 -1 0 ""
   "main.aux" 1659955675 13516 a824bac90dfe519fcc34e761caea9a14 "pdflatex"
   "mainNotes.bib" 1659955675 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   "rot.bib" 1659955669 80804 c08ef67f788bfef3622d1e29a4f6611c ""
   (generated)
-  "main.bbl"
   "main.blg"
-["pdflatex"] 1659955673 "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.tex" "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.pdf" "main" 1659955676
+  "main.bbl"
+["pdflatex"] 1659955673 "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.tex" "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.pdf" "main" 1665053838
   "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.aux" 1659955675 13516 a824bac90dfe519fcc34e761caea9a14 ""
-  "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.tex" 1659955667 37307 084fbe2ad4e405eba38c26e21ac6626d ""
+  "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.tex" 1665053835 37307 084fbe2ad4e405eba38c26e21ac6626d ""
   "/Users/pwrzosek/Library/Application Support/MiKTeX/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1659952571 11548 5592edb80bed08800189066afca36fd8 ""
   "/Users/pwrzosek/Library/Application Support/MiKTeX/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt" 1598726171 7006934 e3c82f64a0bc61df973ed2c7cb46e768 ""
-  "/Users/pwrzosek/Library/Application Support/MiKTeX/texmfs/data/pdftex/config/pdftex.map" 1646838290 83936 876ea37268bd3114c048beedc2d41123 ""
+  "/Users/pwrzosek/Library/Application Support/MiKTeX/texmfs/data/pdftex/config/pdftex.map" 1664183218 83936 876ea37268bd3114c048beedc2d41123 ""
   "/Users/pwrzosek/Library/Application Support/MiKTeX/texmfs/install/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1555056991 1436 c7f957a372ef2fbe93c0982f96625e12 ""
   "/Users/pwrzosek/Library/Application Support/MiKTeX/texmfs/install/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1553354315 1004 54797486969f23fa377b128694d548df ""
   "/Users/pwrzosek/Library/Application Support/MiKTeX/texmfs/install/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm" 1553354315 996 a18840b13b499c08ac2de96a99eda4bc ""
@@ -216,12 +216,12 @@
   "main.aux" 1659955675 13516 a824bac90dfe519fcc34e761caea9a14 "pdflatex"
   "main.bbl" 1659955673 3169 06ed8799bea9fd138ecb5d7ce371293b "bibtex main"
   "main.out" 1659955675 877 ac85cf65a83a254547fc00bf7e5d5002 "pdflatex"
-  "main.tex" 1659955667 37307 084fbe2ad4e405eba38c26e21ac6626d ""
+  "main.tex" 1665053835 37307 084fbe2ad4e405eba38c26e21ac6626d ""
   (generated)
-  "mainNotes.bib"
-  "main.log"
-  "main.out"
-  "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.log"
   "main.aux"
   "main.pdf"
+  "mainNotes.bib"
+  "main.out"
+  "main.log"
   "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.pdf"
+  "/Users/pwrzosek/Documents/GitHub/Direct_Greens_Function/rotsaw/paper/main.log"

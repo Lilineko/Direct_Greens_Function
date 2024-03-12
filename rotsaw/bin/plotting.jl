@@ -127,10 +127,10 @@ function plotPS2(peaks)
                 top_margin = 2mm,
                 left_margin = 5mm,
                 bottom_margin = 5mm,
-                xtickfont = font(16),
-                ytickfont = font(16),
-                guidefont = font(16),
-                titlefont = font(16)
+                # xtickfont = font(16),
+                # ytickfont = font(16),
+                # guidefont = font(16),
+                # titlefont = font(16)
             )
         end
         push!(plots, plt)

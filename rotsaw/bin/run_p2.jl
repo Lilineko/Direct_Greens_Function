@@ -6,15 +6,16 @@ info = OrderedDict{String, Union{Int64,Float64}}(
     "broadening" => 0.01,
     "omega min" => -3.5,
     "omega max" => 12.5,
-    "omega points" => 10001,
-    "lattice type" => 1
+    "omega points" => 8001, #10000 for square
+    "lattice type" => 0
 )
 
 include("base.jl")
 
-nMagnons = 10
-JRange = [J for J in 0.0:0.01:1.0]
-mRange = [[0],[1]]#[[0,0], [0,1], [1,0], [1,1]]
+nMagnons = 1000
+JRange = [J for J in 0.0:0.005:1.0]
+mRange = [Int64[],[0],[1],[0,0], [0,1], [1,0], [1,1]]
+noint = true
 
 peaks = OrderedDict{Vector{Int64}, OrderedDict{Float64, Vector{Vector{Float64}}}}()
 for m in mRange
@@ -24,7 +25,7 @@ for m in mRange
     for J in JRange
         println("\n", " >> Calculating J = ", J)
 
-        dir = "./database/" * string(nMagnons) * "/J=" * string(J) * "/"
+        dir = "./database" * ifelse(info["lattice type"] == 0, "_bethe/", "/") * string(nMagnons) * "_" * string(length(m)) * ifelse(noint, "_noint", "") * "/J=" * string(J) * "/"
         filename = string(m)
         G = readData(dir * filename)[m]
 
@@ -77,9 +78,16 @@ end
 #     png(plotA(G), dir * name * ".png")
 # end
 
-include("plotting.jl")
-plts = plotPS2(peaks)
-for it in 1:length(plts)
-    png(plts[it], "./figures/" * string(mRange[it]) * ".png")
-    display(plts[it])
-end
+# ### peaks plotting
+# include("plotting.jl")
+# plts = plotPS2(peaks)
+# for it in 1:length(plts)
+#     png(plts[it], "./figures/" * string(mRange[it]) * ".png")
+#     display(plts[it])
+# end
+
+### saving peaks, weights
+
+file = open("./data/" * ifelse(info["lattice type"] == 0, "pw_bethe", "pw_square") * ifelse(noint, "_noint", "") * ".json", "w")
+JSON.print(file, peaks, 2)
+close(file)
