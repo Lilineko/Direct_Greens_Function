@@ -342,7 +342,7 @@ function mapDecomposition(m, Jrange, info, nMagnons = 12)
         info["coupling constant"] = J
         println("\n", ">>> Calculating J = ", J)
         writeCpp(info)
-        run(`g++ main2.cpp -I ../../_eigen_ -m64 -O3 -march=corei7-avx -std=c++17 -o main2.exe`)
+        run(`g++ main2.cpp -I ../../eigen -m64 -O3 -march=corei7-avx -std=c++17 -o main2.exe`)
         run(`./main2.exe $nMagnons`)
 
         G = rotGF(m)
