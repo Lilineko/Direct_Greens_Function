@@ -1,1 +1,2 @@
 eigen : https://eigen.tuxfamily.org/
+    put eigen directory in the main directory of this project
