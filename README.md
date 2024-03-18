@@ -10,6 +10,6 @@ This project is split into two parts:
 
 **S**elf-**a**voiding **W**alks (**saw**) -- for calculations of diagonal coefficients of the Green's function. Allows access to e.g. the local spectral function of a single hole in 2D t-Jz model. 
 
-Results for 2D t-Jz model and further readings: [P. Wrzosek, K. Wohlfeld, Phys. Rev. B **103**, 035113 (2021)](https://doi.org/10.1103/PhysRevB.103.035113)
+Results for 2D t-Jz model and further readings: [P. Wrzosek, K. Wohlfeld, Phys. Rev. B **103**, 035113 (2021)](https://doi.org/10.1103/PhysRevB.103.035113) ([arXiv:2012.00395](https://arxiv.org/abs/2012.00395)).
 
 **Rot**ational **S**elf-**a**voiding **W**alks (**rotsaw**) -- access to off-diagonal coefficients through the extension of the **saw** case. Allows e.g. for calculations of spectral function with rotational degrees of freedom. 
