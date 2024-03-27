@@ -34,7 +34,7 @@ function run_main(parameters::Parameters)
         mkpath(outdir)
     end
 
-    run(`./main3.exe $nMagnons $J`)
+    run(`./main.exe $nMagnons $J`)
 
     for m in mRange
         data = OrderedDict{Vector{Int64}, Vector{ComplexF64}}()

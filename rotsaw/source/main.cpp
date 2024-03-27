@@ -1,30 +1,36 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
+#include <sstream>
 #include <complex>
 #include <vector>
 #include <cmath>
 #include <Eigen/Eigenvalues>
 
-#define INTERACTIONS
-#define PROXIMITY
+// #define INTERACTIONS
+// #define PROXIMITY
 
-static const double J = 0.4;
-static const double omegaMin = -3.5;
-static const double omegaMax =  6.5;
-static const size_t omegaPoints = 20001;
 static const std::complex< double > iDelta(0, 0.01);
+static const double omegaMin = -3.5;
+static const double omegaMax =  12.5;
+static const size_t omegaPoints = 10001;
 
 static const double PI = 4.0 * atan(1.0);
 
 class Node
 {
 public:
+    double J;
+    Node(double coupling) {
+        J = coupling;
+        m_energy = 2 * J;
+    }
     void setValue(std::complex< int > value) { m_value = value; };
     void setMultiplicity(short multiplicity) { m_multiplicity = multiplicity; };
     void setEnergy(double energy) { m_energy = energy; };
     void setParent(Node *parent) { m_parent = parent; };
     void pushChild(size_t id, std::complex< int > value, short multiplicity) {
-        m_child[id] = new Node;
+        m_child[id] = new Node(J);
         m_child[id]->setParent(this);
         m_child[id]->setValue(value);
         m_child[id]->setMultiplicity(multiplicity);
@@ -38,7 +44,7 @@ public:
 private:
     std::complex< int > m_value = 0;
     short m_multiplicity = 1;
-    double m_energy = 2 * J;
+    double m_energy;
     Node *m_parent = NULL;
     Node *m_child[4] = {};
 };
@@ -56,43 +62,50 @@ void printToFile(T output, std::string fileName)
 
 using namespace Eigen;
 
-bool init(int, char const *[], short &);
+bool init(int, char const *[], short &, double &);
 void build(Node *, short);
 void span(Node *, short);
 void print(Node *, short);
 void scanPrint(Node *, std::vector< std::complex< int > >, short, short);
-void prepare(Node *, short, bool, bool);
+void prepare(Node *, short, double J, bool, bool);
 size_t systemInfo(Node *, short, bool);
 size_t getSystemInfo(Node *, short, std::vector< size_t > &);
 void searchGraph(Node *, size_t &, std::vector< size_t > &, short, short);
-void calculateEnergy(Node *, short);
-void calculateEnergyRecursively(Node *, short, short);
+void calculateEnergy(Node *, short, double);
+void calculateEnergyRecursively(Node *, short, short, double);
 std::vector< std::string > readPaths(std::string);
-std::string getFileName(std::string);
+std::string getFileName(std::string, double);
 Node *getNode(Node *, std::string);
-void calculate(Node *, std::string);
+void calculate(Node *, std::string, short, double);
 std::complex< double > getSelfEnergyValue(double, Node *);
 VectorXcd calculateSelfEnergy(Node *);
 
 int main(int argc, char const *argv[])
 {
     short maxLength = 0;
-    if(!init(argc, argv, maxLength)) return 1;
-    Node *graph = new Node;
+    double J = 0.4;
+
+    if(!init(argc, argv, maxLength, J)) return 1;
+
+    Node *graph = new Node(J);
     build(graph, maxLength);
-    prepare(graph, maxLength, false, true); // (shouldShowWalks, shouldShowStatesCount)
+    prepare(graph, maxLength, J, false, false); // (shouldShowWalks, shouldShowStatesCount)
     auto paths = readPaths("input.txt");
     for (auto path : paths) {
-        calculate(graph, path);
+        calculate(graph, path, maxLength, J);
     }
     return 0;
 }
 
-bool init(int argc, char const *argv[], short &maxLength)
+bool init(int argc, char const *argv[], short &maxLength, double &J)
 {
     if(argc > 1) {
         std::stringstream s(argv[1]);
         s >> maxLength;
+    }
+    if(argc > 2) {
+        std::stringstream s(argv[2]);
+        s >> J;
     }
     if(maxLength < 0 || maxLength > 20) {
         std::cout << "Requested Number of Magnons is Negative or Too High" << std::endl;
@@ -108,7 +121,7 @@ void build(Node *graph, short maxPathLength)
         graph->pushChild(0, std::complex< int >(1, 0), 4);
         span(graph->getChild(0), maxPathLength - 1);
     }
-    std::cout << "\r" << "Building Walks Graph - FINISHED      " << std::endl;
+    std::cout << "\n" << "Building Walks Graph - FINISHED      " << std::endl;
 }
 
 void span(Node *node, short remainingSpans)
@@ -142,10 +155,10 @@ void span(Node *node, short remainingSpans)
     }
 }
 
-void prepare(Node *graph, short maxLength, bool shouldShowWalks, bool shouldShowStatesCount)
+void prepare(Node *graph, short maxLength, double J, bool shouldShowWalks, bool shouldShowStatesCount)
 {
     size_t basisSize = systemInfo(graph, maxLength, shouldShowStatesCount);
-    calculateEnergy(graph, maxLength);
+    calculateEnergy(graph, maxLength, J);
     if(shouldShowWalks) print(graph, maxLength);
 }
 
@@ -215,17 +228,17 @@ void searchGraph(Node *parent, size_t &basisSize, std::vector< size_t > &selfAvo
     }
 }
 
-void calculateEnergy(Node *graph, short maxPathLength)
+void calculateEnergy(Node *graph, short maxPathLength, double J)
 {
     std::cout << "Calculating Energies - IN PROGRESS...";
     if(maxPathLength > 0) {
-        calculateEnergyRecursively(graph, 1, maxPathLength);
+        calculateEnergyRecursively(graph, 1, maxPathLength, J);
     }
-    std::cout << "\r" << "Calculating Energies - FINISHED      " << std::endl;
+    std::cout << "\n" << "Calculating Energies - FINISHED      " << std::endl;
 }
 
 #ifdef INTERACTIONS
-void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLength)
+void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLength, double J)
 {
     short holeNeighboursCount = 0;
     if(pathLength <= maxPathLength) {
@@ -239,12 +252,12 @@ void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLen
             Node *node = parent->getChild(it);
             if(node) {
                 node->setEnergy(parent->getEnergy() + J * (2.0 - static_cast< double >(holeNeighboursCount)));
-                calculateEnergyRecursively(node, pathLength + 1, maxPathLength);
+                calculateEnergyRecursively(node, pathLength + 1, maxPathLength, J);
             }
         }
     }
 #else
-void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLength)
+void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLength, double J)
 {
 #ifdef PROXIMITY
     short holeNeighboursCount = 0;
@@ -259,7 +272,7 @@ void calculateEnergyRecursively(Node *parent, short pathLength, short maxPathLen
 #ifdef PROXIMITY
                 holeNeighboursCount -= node->getMultiplicity() / parent->getMultiplicity();
 #endif
-                calculateEnergyRecursively(node, pathLength + 1, maxPathLength);
+                calculateEnergyRecursively(node, pathLength + 1, maxPathLength, J);
             }
         }
     }
@@ -297,11 +310,14 @@ std::vector< std::string > readPaths(std::string fileName)
     return paths;
 }
 
-std::string getFileName(std::string path)
+std::string getFileName(std::string path, double J)
 {
-    std::string fileName = "output/SE_";
-    fileName.append(path);
-    fileName.append(".txt");
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(4) << J;
+
+    std::string fileName = "output/";
+    fileName += "/J=" + ss.str() + "/SE_" + path + ".txt";
+
     return fileName;
 }
 
@@ -319,12 +335,13 @@ Node *getNode(Node *graph, std::string path)
     return graph;
 }
 
-void calculate(Node *graph, std::string path)
+void calculate(Node *graph, std::string path, short maxLength, double J)
 {
     std::cout << "Calculating Self-Energy " << path << " - IN PROGRESS...";
     VectorXcd result = calculateSelfEnergy(getNode(graph, path));
-    printToFile(result, getFileName(path));
-    std::cout << "\r" << "Calculating Self-Energy " << path << " - FINISHED      " << std::endl;
+    IOFormat precise(FullPrecision, DontAlignCols, ", ", "\n");
+    printToFile(result.format(precise), getFileName(path, J));
+    std::cout << "\n" << "Calculating Self-Energy " << path << " - FINISHED      " << std::endl;
 }
 
 std::complex< double > getSelfEnergyValue(double omega, Node *node)

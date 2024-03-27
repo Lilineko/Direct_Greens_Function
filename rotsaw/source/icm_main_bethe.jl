@@ -23,6 +23,7 @@ function run_main_bethe(parameters::Parameters)
     J = parameters.J
     mRange = parameters.mRange
 
+    # naive adaptive depth (avoids redundant calculations for large J values and keeps depth finite for J -> 0)
     global maxDepth = min(1000, round(10 / J))
 
     info["coupling constant"] = J

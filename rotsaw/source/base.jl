@@ -1,7 +1,7 @@
 rot = (x, r) -> mod1(x + r, 4)
 
 if info["lattice type"] == 0
-    include("bethe2.jl")
+    include("bethe.jl")
 else
     include("square.jl")
 end
